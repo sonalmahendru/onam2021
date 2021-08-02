@@ -19,8 +19,6 @@ recorderControlButton.addEventListener('click', function(){
     }
 });
 
-
-var recorderStream = recorderVideo.captureStream(25);
 var recorderChunks = [];
 var mediaRecorder;
 
