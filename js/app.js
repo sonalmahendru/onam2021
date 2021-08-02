@@ -29,6 +29,14 @@ function startRecording(event){
     } 
 }
 
+function supportsRecording(){
+    if (!window.MediaRecorder){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 function stopRecording(){
     var blob = new Blob(recorderChunks, {
         type: mediaRecorder.mimeType,
@@ -54,9 +62,14 @@ function startRecorder(){
             window.localStream = stream;
             recorderVideo.srcObject = stream;
             recorderVideo.play();
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = startRecording;
-            mediaRecorder.start();
+            if(supportsRecording()){
+                alert("Congratulations! device supports mediaRecorder. if error still occurs check mime type");
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = startRecording;
+                mediaRecorder.start();
+            }else{
+                alert("Device Do not support mediaRecorder API");
+            }
         });
     }else{
         alert("Opps!! Your device do not support video recording.");
@@ -64,7 +77,9 @@ function startRecorder(){
 }
 
 function stopRecorder(){
-    mediaRecorder.stop();
+    if(supportsRecording){
+        mediaRecorder.stop();
+    }
     localStream.getTracks().forEach( (track) => {
         track.stop();
     });
