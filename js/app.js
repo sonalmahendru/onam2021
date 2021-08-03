@@ -66,7 +66,7 @@ function stopRecording(){
 function startRecorder(){
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
-            audio:false,
+            audio:true,
             video:{
                 height:500,
                 width:500,
