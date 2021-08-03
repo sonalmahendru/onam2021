@@ -21,6 +21,18 @@ recorderControlButton.addEventListener('click', function(){
 
 var recorderChunks = [];
 var mediaRecorder;
+var deviceMimeType;
+
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf('safari') != -1) {
+    if (userAgent.indexOf('chrome') > -1) {
+        deviceMimeType = "video/webm; codecs=vp9";
+    } else {
+        deviceMimeType = "video/mp4";
+    }
+}else{
+    deviceMimeType = "video/webm; codecs=vp9";
+}
 
 function startRecording(event){
     if (event.data.size > 0) {
@@ -38,9 +50,7 @@ function supportsRecording(){
 }
 
 function stopRecording(){
-    var blob = new Blob(recorderChunks, {
-        type: mediaRecorder.mimeType,
-    });
+    var blob = new Blob(recorderChunks, { type : deviceMimeType});
     bookVideoSource = URL.createObjectURL(blob);
     book.style.display = 'block';
     bookVideo.src = bookVideoSource;
@@ -56,15 +66,18 @@ function stopRecording(){
 function startRecorder(){
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
+            audio:true,
+            video:{
+                height:500,
+                width:500,
+            }
         }).then(function(stream) {
             window.localStream = stream;
             recorderVideo.srcObject = stream;
             recorderVideo.play();
             if(supportsRecording()){
                 alert("Congratulations! device supports mediaRecorder. if error still occurs check mime type");
-                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder = new MediaRecorder(stream, {mimeType:deviceMimeType});
                 mediaRecorder.ondataavailable = startRecording;
                 mediaRecorder.start();
             }else{
