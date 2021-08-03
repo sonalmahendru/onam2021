@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Camera</title>
 </head>
 <body>
-    <video id="video" height="500" width="500"></video>
+    <video id="video" height="500" width="375" autoplay="true"></video>
     <button id="button">Start</button>
     
     <script>
@@ -29,14 +29,10 @@
         function startCamera(){
             if(navigator.mediaDevices.getUserMedia){
                 navigator.mediaDevices.getUserMedia({
-                    audio:true,
-                    video:{
-                        height:500,
-                        width:500,
-                    }
+                    video:true
                 }).then(function(stream){
                     video.srcObject = stream;
-                    video.play();
+                    //video.play();
                 }).catch(function(error){
                     alert("Error: "+error.message);
                 });
