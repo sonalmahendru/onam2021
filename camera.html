@@ -29,15 +29,11 @@
         function startCamera(){
             if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
                 navigator.mediaDevices.getUserMedia({
-                    audio:true,
-                    video:{
-                        height:500,
-                        width:500,
-                    }
+                    video:true
                 }).then(function(stream){
                     video.srcObject = stream;
-                    window.localStream = stream;
-                    video.play();
+                    //window.localStream = stream;
+                    //video.play();
                 });
             }else{
                 alert("Can not access webcam.");
